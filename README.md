@@ -14,11 +14,14 @@
 [跟着小帅b玩Python爬虫](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU2ODYzNTkwMg==&action=getalbum&album_id=1321044729160859650&scene=173&from_msgid=2247484386&from_itemidx=1&count=3#wechat_redirect)
 
 ### urllib
+```
 urllib.request.urlopen(url, data=None, [timeout, ]*)
 
 urllib.request.Request(url, data=None, headers={}, method=None)
+```
 
-'''py
+```python
+
 from urllib import request, parse
 import ssl
 
@@ -46,7 +49,7 @@ response = request.urlopen(req, context=context)
 
 print(response.read().decode('UTF-8'))
 
-'''
+```
 
 
 ### requests
@@ -54,43 +57,53 @@ print(response.read().decode('UTF-8'))
 
 #### 不同请求
 =======
->>>r = requests.get('https://api.github.com/events')
+```python
+>>> r = requests.get('https://api.github.com/events')
 
->>>r = requests.post('https://httpbin.org/post', data = {'key':'value'})
+>>> r = requests.post('https://httpbin.org/post', data = {'key':'value'})
 
->>>r = requests.put('https://httpbin.org/put', data = {'key':'value'})
+>>> r = requests.put('https://httpbin.org/put', data = {'key':'value'})
 
 >>> r = requests.delete('https://httpbin.org/delete')
 
 >>> r = requests.head('https://httpbin.org/get')
 
 >>> r = requests.options('https://httpbin.org/get')
+```
 
 #### 带参数
 =====
+```pyhon
 >>> payload = {'key1': 'value1', 'key2': 'value2'}
 
 >>> r = requests.get('https://httpbin.org/get', params=payload)
+```
 
 #### 伪装浏览器
 =========
+```python
 >>> url = 'https://api.github.com/some/endpoint'
 
 >>> headers = {'user-agent': 'my-app/0.0.1'}
 
 >>> r = requests.get(url, headers=headers)
+```
 
 ### 正则
-import re
-https://mp.weixin.qq.com/s?__biz=MzU2ODYzNTkwMg==&mid=2247484120&idx=1&sn=5f5a2ad4f9c458c4ed04c2726cf0b6f2&chksm=fc8bba49cbfc335f1dae0ffc2ad03cad443cb944c2666ba51f70e0e9663bb86bc960971bf804&cur_album_id=1321044729160859650&scene=189#rd
+`import re`
 
+[regular expression](https://mp.weixin.qq.com/s?__biz=MzU2ODYzNTkwMg==&mid=2247484120&idx=1&sn=5f5a2ad4f9c458c4ed04c2726cf0b6f2&chksm=fc8bba49cbfc335f1dae0ffc2ad03cad443cb944c2666ba51f70e0e9663bb86bc960971bf804&cur_album_id=1321044729160859650&scene=189#rd)
+
+```
 re.match
 re.search
 re.findall
 re.sub
 re.compile
+```
 
 ### BeautifulSoup
+```
 soup = BeautifulSoup(html_doc,'lxml')
 print(soup.title.string)
 print(soup.p.string)
@@ -99,13 +112,16 @@ print(soup.a)
 print(soup.find_all('a'))
 print(soup.find(id="link2"))
 print(soup.get_text())
+```
 
 ### CSS select for soup
+```
 soup = BeautifulSoup(html_doc,'lxml')
 
 print(soup.select("title"))
 print(soup.select("body a"))
 print(soup.select("p > #link1"))
+```
 
 
 ### Selenium
@@ -116,7 +132,7 @@ restart IDE
 
 [link](https://mp.weixin.qq.com/s?__biz=MzU2ODYzNTkwMg==&mid=2247484164&idx=1&sn=174af324601e22f9809f058760233121&chksm=fc8bbb95cbfc328356c4c7358ef4d25146ac382660dd2a91efe8e132ef4364dab9aa9ef8069a&cur_album_id=1321044729160859650&scene=189#rd)
 
-
+```
 driver = webdriver.Chrome()
 
 - find_element_by_id
@@ -134,9 +150,11 @@ driver = webdriver.Chrome()
 - find_element_by_class_name
 
 - find_element_by_css_selector
+```
 
-if more elements use 'elements' instead of 'element'
+if more elements use '**elements**' instead of '**element**'
 
+```
 driver.find_elements(By.ID, 'xxx')
 ID = "id"
 XPATH = "xpath"
@@ -151,14 +169,14 @@ driver.current_url
 driver.get_cookies()
 driver.page_source
 input.text
-
+```
 
 ### JSON
 Python object to JSON
-- json.dumps()
+`json.dumps()`
 
 JSON to python object
-- json.loads()
+`json.loads()`
 
 ### 多线程与多进程
 并行：在某一个时间段里，可以同时执行多个进程
@@ -180,11 +198,13 @@ Usually use threading
 有点复杂
 
 #### 多进程
+```
 from multiprocessing import Process
 from multiprocessing import Pool
+```
 
 ### 代理ip池
-https://github.com/Python3WebSpider/ProxyPool
+[Link](https://github.com/Python3WebSpider/ProxyPool)
 
 ### 模拟登录
 #### 三种登录方法
@@ -199,6 +219,7 @@ tool： Python-tesseract
 pip install pytesseract
 安装 tesseract-ocr
 
+```python
 pytesseract.image_to_string()
 //#处理灰度
 img.convert('L') 
@@ -237,13 +258,14 @@ data = img.getdata()
                     count += 1
                 if count > 4:
                     img.putpixel((x, y), 0)
+```
 
 
 #### 滑动识别
 [Link](https://mp.weixin.qq.com/s?__biz=MzU2ODYzNTkwMg==&mid=2247484321&idx=1&sn=4bc73324acfacda7d3bc82120b19d11a&chksm=fc8bbb30cbfc322656122f7e2d88eb509a50a3a71e89d9892f73115823b55242eb3be586f1b0&cur_album_id=1321044729160859650&scene=189#rd)
 
 #### 模拟登录模型脚本
-https://github.com/CriseLYJ/awesome-python-login-model
+[Link](https://github.com/CriseLYJ/awesome-python-login-model)
 
 ### Appnium
 爬取手机app数据
@@ -280,9 +302,10 @@ https://github.com/CriseLYJ/awesome-python-login-model
     - [Link](https://pyecharts.org)
 
 ### Scrapy
+```
 scrapy startproject projectname
 scrapy crawl projectname
-
+```
 
 ### Chrome extentions
 - ChroPath
