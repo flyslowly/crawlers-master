@@ -11,7 +11,12 @@
 - 易车
 
 ## 学习网址
-[跟着小帅b玩Python爬虫](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU2ODYzNTkwMg==&action=getalbum&album_id=1321044729160859650&scene=173&from_msgid=2247484386&from_itemidx=1&count=3#wechat_redirect)
+- [跟着小帅b玩Python爬虫](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU2ODYzNTkwMg==&action=getalbum&album_id=1321044729160859650&scene=173&from_msgid=2247484386&from_itemidx=1&count=3#wechat_redirect)
+- [一只爬虫的难产之旅](https://liaodanqi.me/2018/04/08/autohome-spider-1/)
+- [汽车之家论坛爬虫](https://crazydata.xyz/python/%E7%88%AC%E8%99%AB/%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%AE%B6-%E8%AE%BA%E5%9D%9B%E7%88%AC%E8%99%AB/)
+- [《汽车之家》字体反爬之论坛、问答、文章(新闻、车家号）及其评论爬取](https://blog.csdn.net/ayouleyang/article/details/104208616)
+- [爬虫实战--汽车之家](https://www.ljlovelyforever.com/2019/11/04/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98--%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%AE%B6/)
+
 
 ### urllib
 ```
