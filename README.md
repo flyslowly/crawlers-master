@@ -16,6 +16,7 @@
 - [汽车之家论坛爬虫](https://crazydata.xyz/python/%E7%88%AC%E8%99%AB/%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%AE%B6-%E8%AE%BA%E5%9D%9B%E7%88%AC%E8%99%AB/)
 - [《汽车之家》字体反爬之论坛、问答、文章(新闻、车家号）及其评论爬取](https://blog.csdn.net/ayouleyang/article/details/104208616)
 - [爬虫实战--汽车之家](https://www.ljlovelyforever.com/2019/11/04/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98--%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%AE%B6/)
+- [代理池抓取](https://github.com/Python3WebSpider/ProxyPool)
 
 ### urllib
 ```
