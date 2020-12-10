@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from AutohomeCrawler.items import ForumSpiderItem
+from .parsefont import ParseFont
+import re
 
 
 class ForumSpider(scrapy.Spider):
@@ -10,6 +12,7 @@ class ForumSpider(scrapy.Spider):
     ]
 
     def _parse(self, response):
+
         forum_content_list = response.xpath('//*[@id="content"]/div[1]/div[2]/div/dl')
         for content in forum_content_list:
             content_link = content.xpath('./dt/a').attrib['href']
@@ -31,12 +34,53 @@ class ForumSpider(scrapy.Spider):
         title = response.xpath('//*[@id="js-sticky-toolbar"]//div[@class="toolbar-left-title"]/a/text()').get()
         post_date = response.xpath('//span[@class="post-handle-publish"]/strong/text()').get().split(" ")[0]
 
-        content_all = response.xpath('//*[@id="content"]/div[1]/div[2]/div')
-        content_list = content_all.xpath('./dl')
-        for content in content_list:
-            item = ForumSpiderItem()
-            item['link'] = content.xpath('./a').attrib['href'],
-            item['title'] = content.xpath('./a').attrib['data-title'],
-            item['source'] = content.xpath('./dd[2]/span[1]/text()').get().split('：')[1],
-            item['post_date'] = content.xpath('./dd[2]/span[3]/text()').get().split('：')[1]
-            yield item
+        content_list = response.xpath("//div[@class='tz-paragraph']//text()").getall()
+        descriptions = response.xpath("//div[@class='description']//text()").getall()
+
+        comments = response.xpath('//div[@class="reply"]//div[@class="reply-detail"]//text()').getall()
+
+        replys = response.xpath('//div[@class="reply"]//div[@class="reply-sub-cont"]//text()').getall()
+
+        content = ''
+        for elem in content_list:
+            content += elem
+
+        # 对图片的描述
+        description = ''
+        for elem in descriptions:
+            description += elem
+
+        for i in range(len(comments)):
+            comments[i] = comments[i].replace('\n', '').strip()
+        list(filter(None, comments))
+
+        comment = ''
+        for elem in comments:
+            content += elem
+
+        for i in range(len(replys)):
+            replys[i] = replys[i].replace('\n', '').strip()
+        list(filter(None, replys))
+
+        reply = ''
+        for elem in replys:
+            reply += elem
+
+        cmp = re.compile(r",url\('(\/\/.*.ttf)'\).*?\('woff'\)")
+        font_url = cmp.findall(response.text)[0]
+        font_dict = ParseFont(font_url).parse_font()
+        for key, value in font_dict.items():
+            content.replace(key, value)
+            description.replace(key, value)
+            comment.replace(key, value)
+            reply.replace(key, value)
+
+        item = ForumSpiderItem()
+        item['source'] = source
+        item['title'] = title
+        item['post_date'] = post_date
+        item['content'] = content
+        item['description'] = description
+        item['comment'] = comment
+        item['reply'] = reply
+        yield item
