@@ -1,2 +1,5 @@
 #IDE file
 .idea
+
+#Compile file
+__pycache__
