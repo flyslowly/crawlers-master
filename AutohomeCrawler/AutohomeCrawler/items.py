@@ -17,9 +17,11 @@ class AutohomecrawlerItem(scrapy.Item):
 
 class ForumSpiderItem(scrapy.Item):
     # define the fields for your item here like:
-    author = scrapy.Field()
     content = scrapy.Field()
     comment = scrapy.Field()
     title = scrapy.Field()
     source = scrapy.Field()
     post_date = scrapy.Field()
+    description = scrapy.Field()
+    reply = scrapy.Field()
+    _id = scrapy.Field()

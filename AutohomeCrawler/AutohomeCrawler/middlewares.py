@@ -9,7 +9,6 @@ from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 import random
 import requests
 
-PROXY_POOL_URL = 'http://localhost:5555/random'
 
 
 # useful for handling different item types with a single interface
@@ -111,10 +110,9 @@ class AutohomecrawlerDownloaderMiddleware:
 
 
 class MyUserAgentMiddleware(UserAgentMiddleware):
-    '''
+    """
     设置User-Agent
-    '''
-
+    """
     def __init__(self, user_agent):
         self.user_agent = user_agent
 
@@ -129,6 +127,8 @@ class MyUserAgentMiddleware(UserAgentMiddleware):
         print(f"UserAgent --> {agent}")
         request.headers['User-Agent'] = agent
 
+
+PROXY_POOL_URL = 'http://localhost:5555/random'
 
 class ProxyMiddleware(object):
     def process_request(self, request, spider):

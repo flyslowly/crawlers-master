@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from fontTools.ttLib import TTFont
 import requests
 import re
 from lxml import etree
+import os
 
 
 class ParseFont:
@@ -10,14 +12,19 @@ class ParseFont:
         self.parse_font()
 
     def parse_font(self):
-        old_font = TTFont(r'./fonts/ChcCQ1sUz2iATgrtAABj9DiBxVE68..ttf')
-
+        # old_font = TTFont(r'./fonts/ChcCQ1sUz2iATgrtAABj9DiBxVE68..ttf')
+        old_font = TTFont(r'./AutohomeCrawler/spiders/fonts/ChcCQ1sUz2iATgrtAABj9DiBxVE68..ttf')
         font_file = self.download_font(self.font_url)
         font_file_name = self.font_url.split('/')[-1]
-        with open('fonts/' + font_file_name, 'wb') as f:
+        with open('AutohomeCrawler/spiders/fonts/' + font_file_name, 'wb') as f:
             f.write(font_file)
 
-        new_font = TTFont(r'./fonts/' + font_file_name)
+        new_font = TTFont(r'./AutohomeCrawler/spiders/fonts/' + font_file_name)
+
+        # with open('fonts/' + font_file_name, 'wb') as f:
+        #     f.write(font_file)
+        #
+        # new_font = TTFont(r'./fonts/' + font_file_name)
 
         old_word_list = ['着', '和', '上', '不', '二', '低', '六', '五', '矮', '很', '远', '右', '多', '坏', '少', '好', '十', '小',
                          '九', '八', '了', '长', '得', '下', '七', '四', '地', '左', '三', '更', '高', '近', '的', '呢', '短', '是',
@@ -54,12 +61,14 @@ class ParseFont:
                 if self.compare(old_unicode, new_unicode):
                     new_word_dict[new_unicode_list[i]] = old_word_dict[old_unicode_list[j]]
 
-        print(new_word_dict)
-        # new_font_dict_utf8 = {key.replace('uni', '&#x') + ';': value for key, value in new_word_dict.items()}
-        # print(new_font_dict_utf8)
+        # print(new_word_dict)
+        new_word_dict_unicode = {eval("u'\\u" + key[3:].lower() + "'") : value for key, value in new_word_dict.items()}
+        # print(new_word_dict_unicode)
 
-        # return new_font_dict_utf8
-        return new_word_dict
+        # os.remove(r'./fonts/' + font_file_name)
+        os.remove(r'./AutohomeCrawler/spiders/fonts/' + font_file_name)
+
+        return new_word_dict_unicode
 
     def download_font(self, url):
         headers = {
@@ -95,7 +104,7 @@ if __name__ == '__main__':
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/'
                       '537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'}
     baseurl = '//k3.autoimg.cn/g1/M09/D2/CF/ChcCQ1sUz16AbTQfAABj6MxuvgQ78..ttf'
-    url = 'https://club.autohome.com.cn/bbs/thread/7408b99af2039f74/92165237-1.html'
+    url = 'https://club.autohome.com.cn/bbs/thread/7216298b897a1f6e/92261941-1.html'
     response = requests.get(url=url, headers=headers)
     page = etree.HTML(response.text)
     source = page.xpath('//*[@id="js-sticky-toolbar"]//a[@class="name"]/text()')[0]
@@ -110,21 +119,22 @@ if __name__ == '__main__':
     cmp = re.compile(r",url\('(\/\/.*.ttf)'\).*?\('woff'\)")
     font_url = cmp.findall(response.text)[0]
     font_dict = ParseFont(font_url).parse_font()
-    s_font_dict = {key.replace('uni','&#x') + ';' : value for key, value in font_dict.items()}
+    # s_font_dict = {key.replace('uni', u'\\u') : value for key, value in font_dict.items()}
+    # s_font_dict = {eval("u'\\u" + key[3:] + "'") : value for key, value in font_dict.items()}
 
-    print(s_font_dict)
+    # print(s_font_dict)
 
     content = ''
     for elem in content_list:
-        for key, value in s_font_dict.items():
-            elem = elem.replace(key, value)
+        # for key, value in s_font_dict.items():
+        #     elem = elem.replace(key, value)
         content += elem
 
     # 对图片的描述
     description = ''
     for elem in descriptions:
-        for key, value in s_font_dict.items():
-            elem = elem.replace(key, value)
+        # for key, value in s_font_dict.items():
+        #     elem = elem.replace(key, value)
         description += elem
     # for key in font_dict.keys():
     #     changed_key = r"u'\u" + key[3:] + "'"
@@ -140,9 +150,9 @@ if __name__ == '__main__':
     # for key in font_dict:
     #     change_key = r'\u' + key[3:] +';'
     #     s_font_dict[change_key.decode('unicode_escape')] = font_dict[key]
-    # for key,value in s_font_dict.items():
-    #     content = content.replace(key , value)
-    #     description = description.replace(key , value)
+    for key,value in font_dict.items():
+        content = content.replace(key , value)
+        description = description.replace(key , value)
 
     print('source: ' + source)
     print('title: ' + title)

@@ -3,9 +3,13 @@ import scrapy
 from AutohomeCrawler.items import ForumSpiderItem
 from .parsefont import ParseFont
 import re
+import uuid
 
 
 class ForumSpider(scrapy.Spider):
+    meta_no_redirect = {
+        'handle_httpstatus_list': [302, 404]
+    }
     name = 'forumspider'
     start_urls = [
         'https://sou.autohome.com.cn/luntan?q=OTA%C9%FD%BC%B6&pvareaid=100834&page=1&entry=44',
@@ -19,15 +23,15 @@ class ForumSpider(scrapy.Spider):
             print(content_link)
             yield response.follow(content_link, self.parse_content)
 
-        next_page = response.xpath('//*[@id="content"]/div[1]/div[5]/a[@class="page-item-next"]').attrib['href']
-        if next_page is not None:
-            next_page = self.start_urls[0].split('?')[0] + next_page
-            yield response.follow(next_page, self._parse)
+        # next_page = response.xpath('//*[@id="content"]/div[1]/div[5]/a[@class="page-item-next"]').attrib['href']
+        # if next_page is not None:
+        #     next_page = self.start_urls[0].split('?')[0] + next_page
+        #     yield response.follow(next_page, self._parse)
 
     def parse_content(self, response):
         if response.xpath('//h1[@class="post-delete-title"]/text()').get() == '主楼已被删除':
             return
-        if response.xpath('/html/body/comment()[11]').extract()[0].split(' ')[1] == '视频':
+        if response.xpath('//*[@id="videoWrap"]'):
             return
 
         source = response.xpath('//*[@id="js-sticky-toolbar"]//a[@class="name"]/text()').get()
@@ -83,4 +87,5 @@ class ForumSpider(scrapy.Spider):
         item['description'] = description
         item['comment'] = comment
         item['reply'] = reply
+        item['_id'] = uuid.uuid1()
         yield item

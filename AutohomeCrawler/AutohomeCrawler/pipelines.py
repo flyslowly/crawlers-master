@@ -18,11 +18,11 @@ class AutohomecrawlerPipeline:
         self.article = self.db.article
 
     def process_item(self, item, spider):
-        if not self.forum or not item:
+        if not self.connection or not item:
             return
         self.forum.save(item)
         return item
 
     def __del__(self):
-        if self.forum:
-            self.forum.close()
+        if self.connection:
+            self.connection.close()
