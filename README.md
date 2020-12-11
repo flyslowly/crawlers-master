@@ -18,6 +18,21 @@
 - [爬虫实战--汽车之家](https://www.ljlovelyforever.com/2019/11/04/%E7%88%AC%E8%99%AB%E5%AE%9E%E6%88%98--%E6%B1%BD%E8%BD%A6%E4%B9%8B%E5%AE%B6/)
 - [代理池抓取](https://github.com/Python3WebSpider/ProxyPool)
 
+## Prerequisite
+- scrapy>=2.4.0
+    - parsel
+    - w3lib
+    - twisted
+    - cryptography
+    - pyOpenSSL
+    - lxml
+- itemadapter>=0.2.0
+- pymongo>=3.11.0
+- requests>=2.24.0
+- matplotlib>=3.3.2
+- fonttools>=4.16.1
+- lxml>=4.6.1
+
 ### urllib
 ```
 urllib.request.urlopen(url, data=None, [timeout, ]*)
@@ -25,43 +40,10 @@ urllib.request.urlopen(url, data=None, [timeout, ]*)
 urllib.request.Request(url, data=None, headers={}, method=None)
 ```
 
-```python
-
-from urllib import request, parse
-import ssl
-
-context = ssl._create_unverified_context()
-
-url = 'https://biihu.cc//account/ajax/login_process/'
-headers = {
-    # 假装自己是浏览器
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                  'Chrome/71.0.3578.98 Safari/537.36',
-}
-
-diction = {
-    'return_url': 'https://biihu.cc/',
-    'user_name': 'xiaoshuaib@gmail.com',
-    'password': '123456789',
-    '_post_type': 'ajax',
-}
-
-data = bytes(parse.urlencode(diction), 'utf-8')
-
-req = request.Request(url, data=data, headers=headers, method='POST')
-
-response = request.urlopen(req, context=context)
-
-print(response.read().decode('UTF-8'))
-
-```
-
-
 ### requests
 [Requests](https://mp.weixin.qq.com/s?__biz=MzU2ODYzNTkwMg==&mid=2247484115&idx=1&sn=4f9ca3f0938cf9d9eaa9c6ff6c457481&chksm=fc8bba42cbfc335478f72ef83049238aab250f5cf471cffe60b9ac736368b0eb4dbd2c74bcfd&cur_album_id=1321044729160859650&scene=189#rd)
 
 #### 不同请求
-=======
 ```python
 >>> r = requests.get('https://api.github.com/events')
 
@@ -77,7 +59,6 @@ print(response.read().decode('UTF-8'))
 ```
 
 #### 带参数
-=====
 ```pyhon
 >>> payload = {'key1': 'value1', 'key2': 'value2'}
 
@@ -85,7 +66,6 @@ print(response.read().decode('UTF-8'))
 ```
 
 #### 伪装浏览器
-=========
 ```python
 >>> url = 'https://api.github.com/some/endpoint'
 
