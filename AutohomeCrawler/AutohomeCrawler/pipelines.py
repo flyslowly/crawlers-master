@@ -3,12 +3,11 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
-
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 from pymongo import MongoClient
-from AutohomeCrawler.items import ForumItem
-from AutohomeCrawler.settings import MONGO_URI
+from items import ForumItem
+from settings import MONGO_URI
 
 class AutohomecrawlerPipeline:
     def __init__(self, mongo_uri, mongo_db):
