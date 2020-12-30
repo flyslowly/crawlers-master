@@ -99,6 +99,8 @@ print(soup.find(id="link2"))
 print(soup.get_text())
 ```
 
+Drawback : Slow
+
 ### CSS select for soup
 ```
 soup = BeautifulSoup(html_doc,'lxml')
@@ -108,6 +110,9 @@ print(soup.select("body a"))
 print(soup.select("p > #link1"))
 ```
 
+### lxml
+
+lxml is an XML parsing library (which also parses HTML) with a pythonic API based on `ElementTree`. 
 
 ### Selenium
 - pip install selenium
