@@ -3,3 +3,6 @@
 
 #Compile file
 __pycache__
+
+#vscode
+.vscode
