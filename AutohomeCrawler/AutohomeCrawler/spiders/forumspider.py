@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from AutohomeCrawler.items import ForumSpiderItem
+from AutohomeCrawler.items import ForumItem
 from .parsefont import ParseFont
 import re
 import uuid
@@ -12,21 +12,23 @@ class ForumSpider(scrapy.Spider):
     }
     name = 'forumspider'
     start_urls = [
-        'https://sou.autohome.com.cn/luntan?q=OTA%C9%FD%BC%B6&pvareaid=100834&page=1&entry=44',
+        'https://sou.autohome.com.cn/luntan?entry=44&error=1&q=OTA&page=1',
     ]
 
     def _parse(self, response):
 
-        forum_content_list = response.xpath('//*[@id="content"]/div[1]/div[2]/div/dl')
+        forum_content_list = response.xpath('//*[@id="content"]//div[@class="result"]/div/dl')
         for content in forum_content_list:
             content_link = content.xpath('./dt/a').attrib['href']
             print(content_link)
+            content_link = 'https:' + content_link
+            print(content_link)
             yield response.follow(content_link, self.parse_content)
 
-        # next_page = response.xpath('//*[@id="content"]/div[1]/div[5]/a[@class="page-item-next"]').attrib['href']
-        # if next_page is not None:
-        #     next_page = self.start_urls[0].split('?')[0] + next_page
-        #     yield response.follow(next_page, self._parse)
+        next_page = response.xpath('//*[@id="content"]//a[@class="page-item-next"]')
+        if next_page is not None:
+            next_page = 'https://sou.autohome.com.cn/luntan' + next_page.attrib['href']
+            yield response.follow(next_page, self._parse)
 
     def parse_content(self, response):
         if response.xpath('//h1[@class="post-delete-title"]/text()').get() == '主楼已被删除':
@@ -79,7 +81,7 @@ class ForumSpider(scrapy.Spider):
             comment.replace(key, value)
             reply.replace(key, value)
 
-        item = ForumSpiderItem()
+        item = ForumItem()
         item['source'] = source
         item['title'] = title
         item['post_date'] = post_date
