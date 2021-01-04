@@ -111,7 +111,7 @@ class AutohomecrawlerDownloaderMiddleware:
 
 class MyUserAgentMiddleware(UserAgentMiddleware):
     """
-    设置User-Agent
+    Randomly set a User-Agent from User-Agent list
     """
     def __init__(self, user_agent):
         self.user_agent = user_agent
@@ -119,27 +119,29 @@ class MyUserAgentMiddleware(UserAgentMiddleware):
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
-            user_agent=crawler.settings.get('MY_USER_AGENT')
+            user_agent=crawler.settings.get('USER_AGENT_LIST')
         )
 
     def process_request(self, request, spider):
-        agent = random.choice(self.user_agent)
-        print(f"UserAgent --> {agent}")
-        request.headers['User-Agent'] = agent
+        ua = random.choice(self.user_agent)
+        print(f"UserAgent --> {ua}")
+        request.headers['User-Agent'] = ua
 
-
-PROXY_POOL_URL = 'http://localhost:5555/random'
 
 class ProxyMiddleware(object):
+    '''
+    Randomly set a proxy from proxy pool
+    '''
     def process_request(self, request, spider):
+        PROXY_POOL_URL = 'http://localhost:5555/random'
         try:
             response = requests.get(PROXY_POOL_URL)
             if response.status_code == 200:
                 proxy = 'http://' + response.text
-                print(f"ProxyMiddleware --> {proxy}")
+                print(f"Proxy --> {proxy}")
                 request.meta["proxy"] = proxy
 
         except ConnectionError:
-            print('Failed to connect to get random proxy')
+            print('[Error] --> Failed to connect to get a random proxy')
             return None
 
