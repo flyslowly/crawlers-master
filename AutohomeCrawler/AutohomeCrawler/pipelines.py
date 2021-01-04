@@ -34,8 +34,8 @@ class AutohomecrawlerPipeline:
     def process_item(self, item, spider):
         if isinstance(item, ForumItem):
             self._process_forum(item)
-        # elif isinstance(item, ZhihuRelationItem):
-        #     self._process_relation(item)
+        # elif isinstance(item, QAItem):
+        #     self._process_qa(item)
         return item
 
     def _process_forum(self, item):
