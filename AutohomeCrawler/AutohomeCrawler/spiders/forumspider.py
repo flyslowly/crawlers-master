@@ -31,7 +31,9 @@ class ForumSpider(scrapy.Spider):
             yield response.follow(next_page, self._parse)
 
     def parse_content(self, response):
-        if response.xpath('//h1[@class="post-delete-title"]/text()').get() == '主楼已被删除':
+        #TODO Add link attribute, deal with video post, text replace verify
+
+        if response.xpath('//h1[@class="post-delete-title"]'):
             return
         if response.xpath('//*[@id="videoWrap"]'):
             return
